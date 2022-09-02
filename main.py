@@ -16,6 +16,8 @@ import argparse
 # 系统操作包
 import os
 
+from selenium.webdriver.chrome.service import Service
+
 
 def get_web_driver():
     # 参数
@@ -27,8 +29,9 @@ def get_web_driver():
     # 指定路径
     chromedriver = "/usr/bin/chromedriver"
     os.environ["webdriver.chrome.driver"] = chromedriver
-    driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
-    driver.implicitly_wait(10) # 所有的操作都可以最长等待10s
+    s = Service(chromedriver)
+    driver = webdriver.Chrome(service=s, options=chrome_options)
+    driver.implicitly_wait(30) # 所有的操作都可以最长等待30s
     return driver
 
 
