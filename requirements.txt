@@ -1,0 +1,5 @@
+selenium
+threadpool
+requests
+# json 最新版python自带
+# argparse 最新版python自带

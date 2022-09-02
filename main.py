@@ -1,9 +1,9 @@
-from selenium import webdriver as webdriver
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 # 导入处理<select>标签的工具
 from selenium.webdriver.support.select import Select
 # 导入无头参数需要的包，注意应导入对应浏览器的option包
-from selenium.webdriver.edge.options import Options
+from selenium.webdriver.chrome.options import Options
 # 线程池包
 import threadpool
 # 微信公众号发送消息模块
@@ -13,6 +13,23 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # 命令行传入参数包
 import argparse
+# 系统操作包
+import os
+
+
+def get_web_driver():
+    # 参数
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')  # 解决DevToolsActivePort文件不存在的报错
+    chrome_options.add_argument('window-size=1920x1080')  # 指定浏览器分辨率
+    chrome_options.add_argument('--disable-gpu')  # 谷歌文档提到需要加上这个属性来规避bug
+    chrome_options.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
+    # 指定路径
+    chromedriver = "/usr/bin/chromedriver"
+    os.environ["webdriver.chrome.driver"] = chromedriver
+    driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
+    driver.implicitly_wait(10) # 所有的操作都可以最长等待10s
+    return driver
 
 
 class AutoReporting:
@@ -29,13 +46,9 @@ class AutoReporting:
         district = stu_dic['district']
 
         while True:
-            web = webdriver.Edge('D:\et\program\code\python\python_tool\web_driver\msedgedriver.exe', options=opt)
+            web = get_web_driver()
             web.get(self.url)
             try:
-                # 无头参数
-                opt = Options()
-                opt.add_argument('--headless')
-
                 # 创建等待对象
                 wait = WebDriverWait(web, 15) # 最多等待web 15秒
                 # 进入填报的登录页面
