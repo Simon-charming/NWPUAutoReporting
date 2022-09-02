@@ -5,11 +5,11 @@ import json
 
 
 class SendMessage():
-    def __init__(self, appID, appSecret, openID):
+    def __init__(self, appID, appSecret, open_id):
         self.appID = appID # 'wx57596acab238197b'
         self.appsecret = appSecret # 'ea93e53e139da2696be0d02a41e855ba'
         self.access_token = self.get_access_token()
-        self.opend_id = openID
+        self.open_id = open_id
 
     def get_access_token(self):
         """
@@ -44,9 +44,9 @@ class SendMessage():
         """
         url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={}".format(self.access_token)
         print(url)
-        if self.opend_id != '':
+        if self.open_id != '':
             body = {
-                "touser": self.opend_id,
+                "touser": self.open_id,
                 "msgtype":"text",
                 "text":
                 {
@@ -82,10 +82,10 @@ class SendMessage():
         """
         media_id = self.upload_media(media_type, media_path)
         url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={}'.format(self.access_token)
-        if self.opend_id != '':
+        if self.open_id != '':
             if media_type == "image":
                 body = {
-                    "touser": self.opend_id,
+                    "touser": self.open_id,
                     "msgtype": "image",
                     "image":
                         {
@@ -94,7 +94,7 @@ class SendMessage():
                 }
             if media_type == "voice":
                 body = {
-                    "touser": self.opend_id,
+                    "touser": self.open_id,
                     "msgtype": "voice",
                     "voice":
                         {
