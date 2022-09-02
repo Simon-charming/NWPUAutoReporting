@@ -40,7 +40,7 @@ jobs:
 
       - name: 'Working'
         run: |
-          sudo cp -p ./chromedriver /usr/bin/
-          chmod -R 777 /usr/bin/chromedriver
+          # sudo cp -p ./chromedriver /usr/bin/
+          # chmod -R 777 /usr/bin/chromedriver
           python ./main.py -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} -pr ${{ secrets.PROVINCE }} -c ${{ secrets.CITY }} -d ${{ secrets.DISTRICT }} -de ${{ secrets.DETAILED }} -ai ${{ secrets.APPID }} -as ${{ secrets.APPSECRET }} -o ${{ secrets.OPENID }}
 
