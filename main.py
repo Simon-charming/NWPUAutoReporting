@@ -146,6 +146,7 @@ class AutoReporting:
 
             except:
                 web.quit()
+                exit()
 
 
     def mul_auto_fill(self):
