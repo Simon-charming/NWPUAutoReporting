@@ -19,10 +19,7 @@ class AutoReporting:
     def __init__(self, stu_dic_list):
         self.stu_dic_list = stu_dic_list
         self.url = "https://yqtb.nwpu.edu.cn/wx/ry/jrsb_xs.jsp"
-        # shr:oOuS7542y02BQDPFa3zvdwqiMctk  hxy:oOuS759GdF3Ob3QUdvCHGb9PXavo
-        self.send = SendMessage(appID='wx57596acab238197b', appSecret='ea93e53e139da2696be0d02a41e855ba',open_id='')
-        self.shr = 'oOuS7542y02BQDPFa3zvdwqiMctk'
-        self.hxy = 'oOuS759GdF3Ob3QUdvCHGb9PXavo'
+        self.send = SendMessage(appID=stu_dic_list[0]['appID'], appSecret=stu_dic_list[0]['appSecret'],open_id=stu_dic_list[0]['open_id'])
 
     def auto_fill(self, stu_dic):
         userName = stu_dic['userName']
@@ -32,13 +29,12 @@ class AutoReporting:
         district = stu_dic['district']
 
         while True:
+            web = webdriver.Edge('D:\et\program\code\python\python_tool\web_driver\msedgedriver.exe', options=opt)
+            web.get(self.url)
             try:
                 # 无头参数
                 opt = Options()
                 opt.add_argument('--headless')
-
-                web = webdriver.Edge('D:\et\program\code\python\python_tool\web_driver\msedgedriver.exe',options=opt)
-                web.get(self.url)
 
                 # 创建等待对象
                 wait = WebDriverWait(web, 15) # 最多等待web 15秒
@@ -128,14 +124,8 @@ class AutoReporting:
                 secondSubmit_element.click()
 
                 # 发送填报完成的信息
-                if userName == '2021302779':
-                    self.send.open_id = self.shr
-                    self.send.send_message("%s已填报完成" % userName)
-                    print("%s填报完成" % userName)
-                elif userName == '2021302730':
-                    self.send.open_id = self.hxy
-                    self.send.send_message("%s已填报完成" % userName)
-                    print("%s填报完成" % userName)
+                self.send.send_message("%s已填报完成" % userName)
+                print("%s填报完成" % userName)
                 break
 
             except:
@@ -162,9 +152,15 @@ def accept_parser():
     parser.add_argument('--city', '-c', help='城市 属性，非必要参数，必须要填全名（如合肥市）', default='')
     parser.add_argument('--district', '-d', help='区县 属性，非必要参数，必须要填全名（如长安区）', default='')
     parser.add_argument('--detailed', '-de', help='详细居住地 属性，非必要参数，如住在西安且不在学校需填写现居住地址（##街道##小区#号楼#单元#室）', default='')
+
+    parser.add_argument('--appID', '-ai', help='appid 属性，通过微信测试公众号获取，必要参数，无默认值', required=True)
+    parser.add_argument('--appSecret', '-as', help='appSecret 属性，通过微信测试公众号获取，必要参数，无默认值', required=True)
+    parser.add_argument('--open_id', '-o', help='学号 属性，必要参数，通过微信测试公众号获取，无默认值', required=True)
+
     args = parser.parse_args()
     stu_dic = {
-        'userName': args.userName, "password": args.password, 'province': args.province, 'city': args.city, 'district': args.district,'detailed': args.detailed
+        'userName': args.userName, "password": args.password, 'province': args.province, 'city': args.city, 'district': args.district,'detailed': args.detailed,
+        'appID': args.appID, 'appSecret': args.appSecret, 'open_id': args.open_id
     }
     return stu_dic
 
