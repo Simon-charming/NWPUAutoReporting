@@ -41,4 +41,4 @@ jobs:
       - name: 'Working'
         run: |
           python ./main.py -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} -pr ${{ secrets.PROVINCE }} -c ${{ secrets.CITY }} -d ${{ secrets.DISTRICT }} -de ${{ secrets.DETAILED }} -ai ${{ secrets.APPID }} -as ${{ secrets.APPSECRET }} -o ${{ secrets.OPENID }}
-
+          python ./main.py -u ${{ secrets.USERNAME1 }} -p ${{ secrets.PASSWORD1 }} -pr ${{ secrets.PROVINCE1 }} -c ${{ secrets.CITY1 }} -d ${{ secrets.DISTRICT1 }} -de ${{ secrets.DETAILED1 }} -ai ${{ secrets.APPID }} -as ${{ secrets.APPSECRET }} -o ${{ secrets.OPENID1 }}
