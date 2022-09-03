@@ -51,102 +51,99 @@ class AutoReporting:
         while True:
             web = get_web_driver()
             web.get(self.url)
-            try:
-                # 创建等待对象
-                wait = WebDriverWait(web, 15) # 最多等待web 15秒
-                # 进入填报的登录页面
-                # 输入账号
-                userName_element = wait.until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="username"]'))
+
+            # 创建等待对象
+            wait = WebDriverWait(web, 15) # 最多等待web 15秒
+            # 进入填报的登录页面
+            # 输入账号
+            userName_element = wait.until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="username"]'))
+            )
+            userName_element.send_keys(userName)
+            # 输入密码
+            password_element = wait.until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="password"]'))
+            )
+            password_element.send_keys(password)
+            # 点击登录按钮
+            logOn_element = wait.until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="fm1"]/div[4]/div/input[5]'))
+            )
+            logOn_element.click()
+
+            # 进入疫情填报界面
+            # 填写地区（不在西安）
+            if province:
+                inCountry_element = wait.until(
+                    EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[3]'))
                 )
-                userName_element.send_keys(userName)
-                # 输入密码
-                password_element = wait.until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="password"]'))
+                inCountry_element.click()
+
+                province_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="province"]'))
                 )
-                password_element.send_keys(password)
-                # 点击登录按钮
-                logOn_element = wait.until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="fm1"]/div[4]/div/input[5]'))
+                sel_province = Select(province_element)
+                sel_province.select_by_visible_text(province)
+
+                city_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="city"]'))
                 )
-                logOn_element.click()
+                sel_city = Select(city_element)
+                sel_city.select_by_visible_text(city)
 
-                # 进入疫情填报界面
-                # 填写地区（不在西安）
-                if province:
-                    inCountry_element = wait.until(
-                        EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[3]'))
-                    )
-                    inCountry_element.click()
-
-                    province_element = wait.until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="province"]'))
-                    )
-                    sel_province = Select(province_element)
-                    sel_province.select_by_visible_text(province)
-
-                    city_element = wait.until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="city"]'))
-                    )
-                    sel_city = Select(city_element)
-                    sel_city.select_by_visible_text(city)
-
-                    district_element = wait.until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="district"]'))
-                    )
-                    sel_district = Select(district_element)
-                    sel_district.select_by_visible_text(district)
-
-                # 在学校
-                else:
-                    inSchool_element = wait.until(
-                        EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[1]'))
-                    )
-                    inSchool_element.click()
-
-                # 填写地区（在西安）
-                if city == '西安市':
-                    inXian_element = wait.until(
-                        EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[2]'))
-                    )
-                    inXian_element.click()
-
-                    district_element = wait.until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="district"]'))
-                    )
-                    sel_district = Select(district_element)
-                    sel_district.select_by_visible_text(district)
-
-                    detailed_element = wait.until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="xaxxdz"]'))
-                    )
-                    detailed_element.send_keys(stu_dic['detailed'])
-
-                # 提交阶段
-                # 点击提交按钮
-                oneSubmit_element = wait.until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="rbxx_div"]/div[27]/div/a'))
+                district_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="district"]'))
                 )
-                oneSubmit_element.click()
-                # 点击确认真实无误按钮
-                ensure_element = wait.until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="qrxx_div"]/div[2]/div[26]/label'))
-                )
-                ensure_element.click()
-                # 点击提交按钮
-                secondSubmit_element = wait.until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="save_div"]'))
-                )
-                secondSubmit_element.click()
+                sel_district = Select(district_element)
+                sel_district.select_by_visible_text(district)
 
-                # 发送填报完成的信息
-                self.send.send_message("%s已填报完成" % userName)
-                print("%s填报完成" % userName)
-                break
+            # 在学校
+            else:
+                inSchool_element = wait.until(
+                    EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[1]'))
+                )
+                inSchool_element.click()
 
-            except:
-                web.quit()
-                exit()
+            # 填写地区（在西安）
+            if city == '西安市':
+                inXian_element = wait.until(
+                    EC.element_to_be_clickable((By.XPATH, '//*[@id="notlocation"]/label[2]'))
+                )
+                inXian_element.click()
+
+                district_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="district"]'))
+                )
+                sel_district = Select(district_element)
+                sel_district.select_by_visible_text(district)
+
+                detailed_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="xaxxdz"]'))
+                )
+                detailed_element.send_keys(stu_dic['detailed'])
+
+            # 提交阶段
+            # 点击提交按钮
+            oneSubmit_element = wait.until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="rbxx_div"]/div[27]/div/a'))
+            )
+            oneSubmit_element.click()
+            # 点击确认真实无误按钮
+            ensure_element = wait.until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="qrxx_div"]/div[2]/div[26]/label'))
+            )
+            ensure_element.click()
+            # 点击提交按钮
+            secondSubmit_element = wait.until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="save_div"]'))
+            )
+            secondSubmit_element.click()
+
+            # 发送填报完成的信息
+            self.send.send_message("%s已填报完成" % userName)
+            print("%s填报完成" % userName)
+            break
+
 
 
     def mul_auto_fill(self):
