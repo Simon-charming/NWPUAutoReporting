@@ -36,10 +36,9 @@ def get_web_driver():
 
 
 class AutoReporting:
-    def __init__(self, stu_dic_list):
-        self.stu_dic_list = stu_dic_list
+    def __init__(self, stu_dic):
         self.url = "https://yqtb.nwpu.edu.cn/wx/ry/jrsb_xs.jsp"
-        self.send = SendMessage(appID=stu_dic_list[0]['appID'], appSecret=stu_dic_list[0]['appSecret'],open_id=stu_dic_list[0]['open_id'])
+        self.send = SendMessage(appID=stu_dic['appID'], appSecret=stu_dic['appSecret'],open_id=stu_dic['open_id'])
 
     def auto_fill(self, stu_dic):
         userName = stu_dic['userName']
@@ -146,16 +145,16 @@ class AutoReporting:
 
 
 
-    def mul_auto_fill(self):
-        stu_num = len(self.stu_dic_list)
-        # 创建线程池
-        pool = threadpool.ThreadPool(stu_num)
-        # 创建请求列表
-        request_list = threadpool.makeRequests(self.auto_fill, self.stu_dic_list)
-        # 将每个请求加入线程池
-        for req in request_list:
-            pool.putRequest(req)
-        pool.wait()  # 等待线程执行完后再执行主线程
+    # def mul_auto_fill(self):
+    #     stu_num = len(self.stu_dic_list)
+    #     # 创建线程池
+    #     pool = threadpool.ThreadPool(stu_num)
+    #     # 创建请求列表
+    #     request_list = threadpool.makeRequests(self.auto_fill, self.stu_dic_list)
+    #     # 将每个请求加入线程池
+    #     for req in request_list:
+    #         pool.putRequest(req)
+    #     pool.wait()  # 等待线程执行完后再执行主线程
 
 
 def accept_parser():
@@ -180,21 +179,16 @@ def accept_parser():
 
 
 def main():
-    stu_dic_list = []
     stu_dic = accept_parser()
-    stu_dic_list.append(stu_dic)
-    auto_report = AutoReporting(stu_dic_list)
+    auto_report = AutoReporting(stu_dic)
     try:
-        auto_report.mul_auto_fill()
+        auto_report.auto_fill(stu_dic)
     except:
-        send = SendMessage(appID='wx57596acab238197b', appSecret='ea93e53e139da2696be0d02a41e855ba',open_id='oOuS7542y02BQDPFa3zvdwqiMctk')
+        send = SendMessage(appID=stu_dic['appID'], appSecret=stu_dic['appSecret'],open_id=stu_dic['open_id'])
         send.send_message("填报失败")
         print("填报失败")
 
 
 if __name__ == '__main__':
-
-
     main()
-
     print("程序结束")

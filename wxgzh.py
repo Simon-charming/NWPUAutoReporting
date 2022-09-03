@@ -6,8 +6,8 @@ import json
 
 class SendMessage():
     def __init__(self, appID, appSecret, open_id):
-        self.appID = appID # 'wx57596acab238197b'
-        self.appsecret = appSecret # 'ea93e53e139da2696be0d02a41e855ba'
+        self.appID = appID
+        self.appsecret = appSecret
         self.access_token = self.get_access_token()
         self.open_id = open_id
 
@@ -68,11 +68,11 @@ class SendMessage():
         """
         url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token={}&type={}'.format(self.access_token, media_type)
         print(url)
-        meida = {
+        media = {
             'media': open(media_path, 'rb')
         }
-        rsponse = requests.post(url, files=meida)
-        parse_json = json.loads(rsponse.content.decode())
+        response = requests.post(url, files=media)
+        parse_json = json.loads(response.content.decode())
         print(parse_json)
         return parse_json.get('media_id')
 
@@ -83,6 +83,7 @@ class SendMessage():
         media_id = self.upload_media(media_type, media_path)
         url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={}'.format(self.access_token)
         if self.open_id != '':
+            body = {}
             if media_type == "image":
                 body = {
                     "touser": self.open_id,
@@ -109,12 +110,3 @@ class SendMessage():
             print(result)
         else:
             print("当前没有用户关注该公众号！")
-
-
-if __name__ == "__main__":
-    data = '送你一张美图'
-    # shr:oOuS7542y02BQDPFa3zvdwqiMctk  smr:oOuS752jGRwI9CgziqbG5fB6ooCM    hxy:oOuS759GdF3Ob3QUdvCHGb9PXavo    qty:oOuS751w8gIa-do8oLtLMkTDPEB0
-    # sends = SendMessage(appID='wx57596acab238197b', appSecret='ea93e53e139da2696be0d02a41e855ba', openID='oOuS7542y02BQDPFa3zvdwqiMctk')
-    sends = SendMessage(appID='wx57596acab238197b', appSecret='ea93e53e139da2696be0d02a41e855ba',openID='oOuS751w8gIa-do8oLtLMkTDPEB0')
-    sends.send_message(data)
-    sends.send_media("image", './test.jpg')
