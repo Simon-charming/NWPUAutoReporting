@@ -15,8 +15,7 @@ class SendMessage():
         """
         获取微信公众号的access_token值
         """
-        url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.\
-            format(self.appID, self.appsecret)
+        url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(self.appID, self.appsecret)
         print(url)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36'
@@ -64,7 +63,7 @@ class SendMessage():
 
     def upload_media(self, media_type, media_path):
         """
-        上传临时文件到微信服务器，并获取该文件到meida_id
+        上传临时文件到微信服务器，并获取该文件到media_id
         """
         url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token={}&type={}'.format(self.access_token, media_type)
         print(url)

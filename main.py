@@ -185,8 +185,8 @@ def main():
         auto_report.auto_fill(stu_dic)
     except:
         send = SendMessage(appID=stu_dic['appID'], appSecret=stu_dic['appSecret'],open_id=stu_dic['open_id'])
-        send.send_message("填报失败")
-        print("填报失败")
+        send.send_message("%s填报失败" % stu_dic['userName'])
+        print("%s填报失败" % stu_dic['userName'])
 
 
 if __name__ == '__main__':
