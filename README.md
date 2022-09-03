@@ -4,7 +4,9 @@
 ## 2、使用说明
 ### （1）准备工作
 建立微信测试公众号。通过该网址建立：[微信公众平台](https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index)
+
 建立后往下翻至测试号二维码，需要接受消息的微信号扫码关注。（注：关注后需发一条消息给公众号）
+
 记住该页面的测试号信息appID、appsecret和已经扫码关注的用户微信号。
 
 
@@ -46,4 +48,7 @@
 
     schedule:
     - cron: '0 22 * * *'
-第一个0代表的是分钟，第二个18代表的是小时，即`'0 22 * * *'`代表22：00，因为github采取utf时间，所以修改时间需要注意一下。
+第一个0代表的是分钟，第二个22代表的是小时，即`'0 22 * * *'`代表22：00，因为github采取utf时间，所以修改时间需要注意一下。
+
+## 参考项目
+### [wmathor/Check_In](https://github.com/wmathor/Check_In)
